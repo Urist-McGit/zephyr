@@ -90,18 +90,18 @@ void can_mcan_configure_timing(struct can_mcan_reg  *can,
 				timing->prescaler > 0);
 		__ASSERT_NO_MSG(timing->sjw <= 0x80 && timing->sjw > 0);
 
-		can->nbtp = (((uint32_t)timing->phase_seg1 - 1UL) & 0xFF) <<
-				CAN_MCAN_NBTP_NTSEG1_POS |
-			    (((uint32_t)timing->phase_seg2 - 1UL) & 0x7F) <<
-				CAN_MCAN_NBTP_NTSEG2_POS |
-			    (((uint32_t)timing->prescaler  - 1UL) & 0x1FF) <<
-				CAN_MCAN_NBTP_NBRP_POS;
+		can->nbtp = (((uint32_t)timing->phase_seg1 - 1UL) <<
+			CAN_MCAN_NBTP_NTSEG1_POS & CAN_MCAN_NBTP_NTSEG1_MSK) |
+			(((uint32_t)timing->phase_seg2 - 1UL) <<
+			CAN_MCAN_NBTP_NTSEG2_POS & CAN_MCAN_NBTP_NTSEG2_MSK) |
+			(((uint32_t)timing->prescaler - 1UL) <<
+			CAN_MCAN_NBTP_NBRP_POS & CAN_MCAN_NBTP_NBRP_MSK);
 
 		if (timing->sjw == CAN_SJW_NO_CHANGE) {
 			can->nbtp |= nbtp_sjw;
 		} else {
-			can->nbtp |= (((uint32_t)timing->sjw - 1UL) & 0x7F) <<
-				     CAN_MCAN_NBTP_NSJW_POS;
+			can->nbtp |= ((uint32_t)timing->sjw - 1UL) <<
+				CAN_MCAN_NBTP_NSJW_POS & CAN_MCAN_NBTP_NSJW_MSK;
 		}
 	}
 
@@ -119,18 +119,21 @@ void can_mcan_configure_timing(struct can_mcan_reg  *can,
 		__ASSERT_NO_MSG(timing_data->sjw <= 0x80 &&
 				timing_data->sjw > 0);
 
-		can->dbtp = (((uint32_t)timing_data->phase_seg1 - 1UL) & 0x1F) <<
-				CAN_MCAN_DBTP_DTSEG1_POS |
-			    (((uint32_t)timing_data->phase_seg2 - 1UL) & 0x0F) <<
-				CAN_MCAN_DBTP_DTSEG2_POS |
-			    (((uint32_t)timing_data->prescaler  - 1UL) & 0x1F) <<
-				CAN_MCAN_DBTP_DBRP_POS;
+		can->dbtp = (((uint32_t)timing_data->phase_seg1 - 1UL) <<
+				CAN_MCAN_DBTP_DTSEG1_POS &
+				CAN_MCAN_DBTP_DTSEG1_MSK) |
+			    (((uint32_t)timing_data->phase_seg2 - 1UL) <<
+				CAN_MCAN_DBTP_DTSEG2_POS &
+				CAN_MCAN_DBTP_DTSEG2_MSK) |
+			    (((uint32_t)timing_data->prescaler  - 1UL) <<
+				CAN_MCAN_DBTP_DBRP_POS & CAN_MCAN_DBTP_DBRP_MSK);
 
 		if (timing_data->sjw == CAN_SJW_NO_CHANGE) {
 			can->dbtp |= dbtp_sjw;
 		} else {
-			can->dbtp |= (((uint32_t)timing_data->sjw - 1UL) & 0x0F) <<
-				     CAN_MCAN_DBTP_DSJW_POS;
+			can->dbtp |= ((uint32_t)timing_data->sjw - 1UL) <<
+				CAN_MCAN_DBTP_DSJW_POS &
+				CAN_MCAN_DBTP_DSJW_MSK;
 		}
 	}
 #endif
