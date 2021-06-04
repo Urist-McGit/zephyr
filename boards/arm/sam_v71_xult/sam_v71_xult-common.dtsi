@@ -24,6 +24,7 @@
 		zephyr,sram = &sram0;
 		zephyr,flash = &flash0;
 		zephyr,code-partition = &slot0_partition;
+		zephyr,can-primary = &can1;
 	};
 
 	leds {
@@ -213,6 +214,16 @@
 };
 
 &pioe {
+	status = "okay";
+};
+
+&can1 {
+	bus-speed = <125000>;
+	sjw = <1>;
+	sample-point = <875>;
+	bus-speed-data = <1000000>;
+	sjw-data = <1>;
+	sample-point-data = <875>;
 	status = "okay";
 };
 
