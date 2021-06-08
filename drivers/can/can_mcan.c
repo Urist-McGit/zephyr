@@ -388,6 +388,9 @@ int can_mcan_init(const struct device *dev, const struct can_mcan_config *cfg,
 		return -EIO;
 	}
 
+	SCB_InvalidateDCache_by_Addr((uint32_t *)msg_ram,
+			sizeof(struct can_mcan_msg_sram));
+
 	/* No memset because only aligned ptr are allowed */
 	for (uint32_t *ptr = (uint32_t *)msg_ram;
 	     ptr < (uint32_t *)msg_ram +
@@ -395,6 +398,9 @@ int can_mcan_init(const struct device *dev, const struct can_mcan_config *cfg,
 	     ptr++) {
 		*ptr = 0;
 	}
+
+	SCB_CleanDCache_by_Addr((uint32_t *)msg_ram,
+			sizeof(struct can_mcan_msg_sram));
 
 	return 0;
 }
@@ -444,6 +450,9 @@ void can_mcan_line_0_isr(const struct can_mcan_config *cfg,
 			 struct can_mcan_data *data)
 {
 	struct can_mcan_reg *can = cfg->can;
+
+	SCB_InvalidateDCache_by_Addr((uint32_t *)msg_ram,
+			sizeof(struct can_mcan_msg_sram));
 
 	do {
 		if (can->ir & (CAN_MCAN_IR_BO | CAN_MCAN_IR_EP |
@@ -564,6 +573,9 @@ void can_mcan_line_1_isr(const struct can_mcan_config *cfg,
 			 struct can_mcan_data *data)
 {
 	struct can_mcan_reg *can = cfg->can;
+
+	SCB_InvalidateDCache_by_Addr((uint32_t *)msg_ram,
+			sizeof(struct can_mcan_msg_sram));
 
 	do {
 		if (can->ir & CAN_MCAN_IR_RF0N) {
@@ -696,6 +708,9 @@ int can_mcan_send(const struct can_mcan_config *cfg,
 		tx_hdr.ext_id = frame->id;
 	}
 
+	SCB_InvalidateDCache_by_Addr((uint32_t *)msg_ram,
+			sizeof(struct can_mcan_msg_sram));
+
 	msg_ram->tx_buffer[put_idx].hdr = tx_hdr;
 
 	for (src = frame->data_32,
@@ -705,6 +720,9 @@ int can_mcan_send(const struct can_mcan_config *cfg,
 		src++, dst++) {
 		*dst = *src;
 	}
+
+	SCB_CleanDCache_by_Addr((uint32_t *)msg_ram,
+			sizeof(struct can_mcan_msg_sram));
 
 	data->tx_fin_cb[put_idx] = callback;
 	data->tx_fin_cb_arg[put_idx] = callback_arg;
@@ -762,6 +780,9 @@ int can_mcan_attach_std(struct can_mcan_data *data,
 						 CAN_MCAN_FCE_FIFO0;
 
 	msg_ram->std_filt[filter_nr] = filter_element;
+
+	SCB_CleanDCache_by_Addr((uint32_t *)msg_ram,
+			sizeof(struct can_mcan_msg_sram));
 
 	k_mutex_unlock(&data->inst_mutex);
 
@@ -821,6 +842,9 @@ static int can_mcan_attach_ext(struct can_mcan_data *data,
 						 CAN_MCAN_FCE_FIFO0;
 
 	msg_ram->ext_filt[filter_nr] = filter_element;
+
+	SCB_CleanDCache_by_Addr((uint32_t *)msg_ram,
+			sizeof(struct can_mcan_msg_sram));
 
 	k_mutex_unlock(&data->inst_mutex);
 
@@ -891,6 +915,9 @@ void can_mcan_detach(struct can_mcan_data *data,
 		msg_ram->std_filt[filter_nr] = std_filter;
 		data->rx_cb_std[filter_nr] = NULL;
 	}
+
+	SCB_CleanDCache_by_Addr((uint32_t *)msg_ram,
+			sizeof(struct can_mcan_msg_sram));
 
 	k_mutex_unlock(&data->inst_mutex);
 }

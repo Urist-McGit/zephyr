@@ -88,5 +88,6 @@ source "drivers/can/Kconfig.mcp2515"
 source "drivers/can/Kconfig.mcan"
 source "drivers/can/Kconfig.loopback"
 source "drivers/can/Kconfig.net"
+source "drivers/can/Kconfig.samv71"
 
 endif # CAN

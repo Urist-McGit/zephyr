@@ -1,0 +1,23 @@
+description: Bosch m_can CAN-FD controller
+
+compatible: "atmel,samv71-mcan"
+
+include: bosch-mcan.yaml
+
+properties:
+    peripheral-id:
+      type: int
+      required: true
+      description: |
+        The peripheral identifier is required for the control of the peripheral
+        interrupt with the Nested Vectored Interrupt Controller and control of
+        the peripheral clock with the Power Management Controller.
+
+    pinctrl-0:
+      type: phandles
+      required: true
+      description: |
+        PIO configuration for CANRX/CANTX. We expect that the phandles will
+        reference pinctrl nodes.  These nodes will have a nodelabel that
+        matches the Atmel SoC HAL defines and be of the form
+        p<port><pin><periph>_<inst>_<signal>.
