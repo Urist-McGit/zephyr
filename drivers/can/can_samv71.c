@@ -191,12 +191,21 @@ static const struct can_driver_api can_api_funcs = {
 		.phase_seg1 = 0x01,
 		.phase_seg2 = 0x01,
 		.prescaler = 0x01 },
+#ifdef CONFIG_SOC_PART_NUMBER_SAMV71Q21
+	.timing_max= {
+		.sjw = 0x0f,
+		.prop_seg = 0x00,
+		.phase_seg1 = 0x40,
+		.phase_seg2 = 0x10,
+		.prescaler = 0x400 },
+#else
 	.timing_max= {
 		.sjw = 0x7f,
 		.prop_seg = 0x00,
 		.phase_seg1 = 0x100,
 		.phase_seg2 = 0x80,
 		.prescaler = 0x200 },
+#endif /* CONFIG_SOC_PART_NUMBER_SAMV71Q21 */
 #ifdef CONFIG_CAN_FD_MODE
 	.timing_min_data = {
 		.sjw = 0x01,
@@ -204,12 +213,21 @@ static const struct can_driver_api can_api_funcs = {
 		.phase_seg1 = 0x01,
 		.phase_seg2 = 0x01,
 		.prescaler = 0x01 },
+#ifdef CONFIG_SOC_PART_NUMBER_SAMV71Q21
+	.timing_max_data = {
+		.sjw = 0x4,
+		.prop_seg = 0x00,
+		.phase_seg1 = 0x10,
+		.phase_seg2 = 0x8,
+		.prescaler = 0x20 }
+#else
 	.timing_max_data = {
 		.sjw = 0x10,
 		.prop_seg = 0x00,
 		.phase_seg1 = 0x20,
 		.phase_seg2 = 0x10,
 		.prescaler = 0x20 }
+#endif /* CONFIG_SOC_PART_NUMBER_SAMV71Q21 */
 #endif /* CONFIG_CAN_FD_MODE */
 };
 

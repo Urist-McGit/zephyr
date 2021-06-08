@@ -48,6 +48,29 @@
 #define CAN_MCAN_ENDN_ETV            CAN_MCAN_ENDN_ETV_MSK
 
 /***************  Bit definition for CAN_MCAN_DBTP register  ******************/
+#ifdef CONFIG_SOC_PART_NUMBER_SAMV71Q21
+/* Synchronization Jump Width */
+#define CAN_MCAN_DBTP_DSJW_POS       (0U)
+#define CAN_MCAN_DBTP_DSJW_MSK       (0x3UL << CAN_MCAN_DBTP_DSJW_POS)
+#define CAN_MCAN_DBTP_DSJW           CAN_MCAN_DBTP_DSJW_MSK
+/* Data time segment after sample point */
+#define CAN_MCAN_DBTP_DTSEG2_POS     (4U)
+#define CAN_MCAN_DBTP_DTSEG2_MSK     (0x7UL << CAN_MCAN_DBTP_DTSEG2_POS)
+#define CAN_MCAN_DBTP_DTSEG2         CAN_MCAN_DBTP_DTSEG2_MSK
+/* Data time segment before sample point */
+#define CAN_MCAN_DBTP_DTSEG1_POS     (8U)
+#define CAN_MCAN_DBTP_DTSEG1_MSK     (0xFUL << CAN_MCAN_DBTP_DTSEG1_POS)
+#define CAN_MCAN_DBTP_DTSEG1         CAN_MCAN_DBTP_DTSEG1_MSK
+/* Data BIt Rate Prescaler */
+#define CAN_MCAN_DBTP_DBRP_POS       (16U)
+#define CAN_MCAN_DBTP_DBRP_MSK       (0x1FUL << CAN_MCAN_DBTP_DBRP_POS)
+#define CAN_MCAN_DBTP_DBRP           CAN_MCAN_DBTP_DBRP_MSK
+/* Transceiver Delay Compensation */
+#define CAN_MCAN_DBTP_TDC_POS        (23U)
+#define CAN_MCAN_DBTP_TDC_MSK        (0x1UL << CAN_MCAN_DBTP_TDC_POS)
+#define CAN_MCAN_DBTP_TDC            CAN_MCAN_DBTP_TDC_MSK
+
+#else
 /* Synchronization Jump Width */
 #define CAN_MCAN_DBTP_DSJW_POS       (0U)
 #define CAN_MCAN_DBTP_DSJW_MSK       (0xFUL << CAN_MCAN_DBTP_DSJW_POS)
@@ -68,6 +91,8 @@
 #define CAN_MCAN_DBTP_TDC_POS        (23U)
 #define CAN_MCAN_DBTP_TDC_MSK        (0x1UL << CAN_MCAN_DBTP_TDC_POS)
 #define CAN_MCAN_DBTP_TDC            CAN_MCAN_DBTP_TDC_MSK
+
+#endif /* CONFIG_SOC_PART_NUMBER_SAMV71Q21 */
 
 /***************  Bit definition for CAN_MCAN_TEST register  *****************/
 /* Loop Back mode */
@@ -180,6 +205,25 @@
 #define CAN_MCAN_CCCR_NISO           CAN_MCAN_CCCR_NISO_MSK
 
 /***************  Bit definition for CAN_MCAN_NBTP register  ******************/
+#ifdef CONFIG_SOC_PART_NUMBER_SAMV71Q21
+/* Nominal Time segment after sample point */
+#define CAN_MCAN_NBTP_NTSEG2_POS     (4U)
+#define CAN_MCAN_NBTP_NTSEG2_MSK     (0xFUL << CAN_MCAN_NBTP_NTSEG2_POS)
+#define CAN_MCAN_NBTP_NTSEG2         CAN_MCAN_NBTP_NTSEG2_MSK
+/* Nominal Time segment before sample point */
+#define CAN_MCAN_NBTP_NTSEG1_POS     (8U)
+#define CAN_MCAN_NBTP_NTSEG1_MSK     (0x3FUL << CAN_MCAN_NBTP_NTSEG1_POS)
+#define CAN_MCAN_NBTP_NTSEG1         CAN_MCAN_NBTP_NTSEG1_MSK
+/* Bit Rate Prescaler */
+#define CAN_MCAN_NBTP_NBRP_POS       (16U)
+#define CAN_MCAN_NBTP_NBRP_MSK       (0x3FFUL << CAN_MCAN_NBTP_NBRP_POS)
+#define CAN_MCAN_NBTP_NBRP           CAN_MCAN_NBTP_NBRP_MSK
+/* Nominal (Re)Synchronization Jump Width */
+#define CAN_MCAN_NBTP_NSJW_POS       (0U)
+#define CAN_MCAN_NBTP_NSJW_MSK       (0xFUL << CAN_MCAN_NBTP_NSJW_POS)
+#define CAN_MCAN_NBTP_NSJW           CAN_MCAN_NBTP_NSJW_MSK
+
+#else
 /* Nominal Time segment after sample point */
 #define CAN_MCAN_NBTP_NTSEG2_POS     (0U)
 #define CAN_MCAN_NBTP_NTSEG2_MSK     (0x7FUL << CAN_MCAN_NBTP_NTSEG2_POS)
@@ -196,6 +240,8 @@
 #define CAN_MCAN_NBTP_NSJW_POS       (25U)
 #define CAN_MCAN_NBTP_NSJW_MSK       (0x7FUL << CAN_MCAN_NBTP_NSJW_POS)
 #define CAN_MCAN_NBTP_NSJW           CAN_MCAN_NBTP_NSJW_MSK
+
+#endif /* CONFIG_SOC_PART_NUMBER_SAMV71Q21 */
 
 /***************  Bit definition for CAN_MCAN_TSCC register  ******************/
 /* Timestamp Select */

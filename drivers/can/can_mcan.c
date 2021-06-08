@@ -82,6 +82,15 @@ void can_mcan_configure_timing(struct can_mcan_reg  *can,
 		uint32_t nbtp_sjw = can->nbtp & CAN_MCAN_NBTP_NSJW_MSK;
 
 		__ASSERT_NO_MSG(timing->prop_seg == 0);
+#ifdef CONFIG_SOC_PART_NUMBER_SAMV71Q21
+		__ASSERT_NO_MSG(timing->phase_seg1 <= 0x40 &&
+				timing->phase_seg1 > 0);
+		__ASSERT_NO_MSG(timing->phase_seg2 <= 0x10 &&
+				timing->phase_seg2 > 0);
+		__ASSERT_NO_MSG(timing->prescaler <= 0x400 &&
+				timing->prescaler > 0);
+		__ASSERT_NO_MSG(timing->sjw <= 0x10 && timing->sjw > 0);
+#else
 		__ASSERT_NO_MSG(timing->phase_seg1 <= 0x100 &&
 				timing->phase_seg1 > 0);
 		__ASSERT_NO_MSG(timing->phase_seg2 <= 0x80 &&
@@ -89,6 +98,7 @@ void can_mcan_configure_timing(struct can_mcan_reg  *can,
 		__ASSERT_NO_MSG(timing->prescaler <= 0x200 &&
 				timing->prescaler > 0);
 		__ASSERT_NO_MSG(timing->sjw <= 0x80 && timing->sjw > 0);
+#endif /* CONFIG_SOC_PART_NUMBER_SAMV71Q21 */
 
 		can->nbtp = (((uint32_t)timing->phase_seg1 - 1UL) <<
 			CAN_MCAN_NBTP_NTSEG1_POS & CAN_MCAN_NBTP_NTSEG1_MSK) |
@@ -110,14 +120,23 @@ void can_mcan_configure_timing(struct can_mcan_reg  *can,
 		uint32_t dbtp_sjw = can->dbtp & CAN_MCAN_DBTP_DSJW_MSK;
 
 		__ASSERT_NO_MSG(timing_data->prop_seg == 0);
+#ifdef CONFIG_SOC_PART_NUMBER_SAMV71Q21
+		__ASSERT_NO_MSG(timing_data->phase_seg1 <= 0x10 &&
+				timing_data->phase_seg1 > 0);
+		__ASSERT_NO_MSG(timing_data->phase_seg2 <= 0x8 &&
+				timing_data->phase_seg2 > 0);
+		__ASSERT_NO_MSG(timing_data->sjw <= 0x4 &&
+				timing_data->sjw > 0);
+#else
 		__ASSERT_NO_MSG(timing_data->phase_seg1 <= 0x20 &&
 				timing_data->phase_seg1 > 0);
 		__ASSERT_NO_MSG(timing_data->phase_seg2 <= 0x10 &&
 				timing_data->phase_seg2 > 0);
-		__ASSERT_NO_MSG(timing_data->prescaler <= 20 &&
-				timing_data->prescaler > 0);
 		__ASSERT_NO_MSG(timing_data->sjw <= 0x80 &&
 				timing_data->sjw > 0);
+#endif /* CONFIG_SOC_PART_NUMBER_SAMV71Q21 */
+		__ASSERT_NO_MSG(timing_data->prescaler <= 20 &&
+				timing_data->prescaler > 0);
 
 		can->dbtp = (((uint32_t)timing_data->phase_seg1 - 1UL) <<
 				CAN_MCAN_DBTP_DTSEG1_POS &
